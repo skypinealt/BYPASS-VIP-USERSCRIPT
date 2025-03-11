@@ -189,8 +189,8 @@
 // @match        *://www.ytsubme.com/*
 // @match        *://ytsubme.com/*
 // @match        *://your-leaks.com/*
-// @downloadURL  
-// @updateURL    
+// @downloadURL  https://raw.githubusercontent.com/skypinealt/BYPASS-VIP-USERSCRIPT/refs/heads/main/source.js/*
+// @updateURL    https://raw.githubusercontent.com/skypinealt/BYPASS-VIP-USERSCRIPT/refs/heads/main/source.js/*
 // @homepageURL  https://bypass.vip
 // @icon         https://www.google.com/s2/favicons?domain=bypass.vip&sz=64
 // @run-at document-start
