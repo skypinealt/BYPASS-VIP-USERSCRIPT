@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BYPASS.VIP
 // @namespace    bypass.vip
-// @version      031225161
+// @version      032225161
 // @author       bypass.vip
 // @description  Skip ad-links and get straight to your destination with the bypass.vip API – enjoy an ad-free experience!
 // @match        *://admiregirls-byme.com/*
@@ -189,63 +189,58 @@
 // @match        *://www.ytsubme.com/*
 // @match        *://ytsubme.com/*
 // @match        *://your-leaks.com/*
-// @downloadURL  https://raw.githubusercontent.com/skypinealt/BYPASS-VIP-USERSCRIPT/refs/heads/main/source.js/*
-// @updateURL    https://raw.githubusercontent.com/skypinealt/BYPASS-VIP-USERSCRIPT/refs/heads/main/source.js/*
+// @downloadURL  
+// @updateURL    
 // @homepageURL  https://bypass.vip
 // @icon         https://www.google.com/s2/favicons?domain=bypass.vip&sz=64
 // @run-at document-start
 // ==/UserScript==
 
-(() => {
-    const scriptSettings = {
-        redirectTimeout: 12, // Timeout value sent to the bypass.vip server
-        apiKey: ''
+(async () => {
+    const config = {
+        time: 12,
+        key: ''
     };
 
     const originalCreateElement = document.createElement.bind(document);
-    document.createElement = function(tagName) {
-        const element = originalCreateElement(tagName);
-        if (tagName.toLowerCase() === 'script') {
+    document.createElement = function(elementName) {
+        const element = originalCreateElement(elementName);
+        if (elementName.toLowerCase() === 'script') {
             element.setAttribute('type', 'text/plain');
         }
         return element;
     };
-    
-    function setPageContent() {
-        document.documentElement.innerHTML = `
-            <html>
-                <head>
-                    <title>BYPASS.VIP USERSCRIPT</title>
-                    <link rel="stylesheet" href="https://bypass.vip/assets/css/styles.css">
-                </head>
-                <body class="userscript">
-                    <h1>bypass.vip userscript</h1>
-                    <h2>redirecting...</h2>
-                </body>
-            </html>
-        `;
-    }
 
-    function getRedirectUrl() {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get('redirect');
-    }
-
-    function handleRedirect(redirectUrl) {
-        if (redirectUrl && redirectUrl.includes('https://flux.li/android/external/main.php')) {
-            document.body.innerHTML = `
+    document.documentElement.innerHTML = `
+        <html>
+            <head>
+                <title>BYPASS.VIP USERSCRIPT</title>
+                <link rel="stylesheet" href="https://bypass.vip/assets/css/styles.css">
+            </head>
+            <body class="userscript">
                 <h1>bypass.vip userscript</h1>
-                <h2>Fluxus implements some extra security checks to detect bypasses so we can't automatically redirect you.</h2>
-                <h3><a href="${redirectUrl}">Click here to redirect</a></h3>
-            `;
-        } else if (redirectUrl) {
-            location.href = redirectUrl;
+                <h2>redirecting...</h2>
+            </body>
+        </html>
+    `;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    handleRedirect(urlParams, config);
+
+    function handleRedirect(urlParams, config) {
+        const redirectUrl = urlParams.get('redirect');
+        if (redirectUrl) {
+            if (redirectUrl.includes('https://flux.li/android/external/main.php')) {
+                document.body.innerHTML = `
+                    <h1>BYPASS.VIP USERSCRIPT</h1>
+                    <h2>Fluxus implements some extra security checks to detect bypasses so we can't automatically redirect you.</h2>
+                    <h3><a href="${redirectUrl}">Click here to redirect</a></h3>
+                `;
+            } else {
+                location.href = redirectUrl;
+            }
         } else {
-            location.href = `https://bypass.vip/userscript.html?url=${encodeURIComponent(location.href)}&time=${scriptSettings.redirectTimeout}&key=${scriptSettings.apiKey}`;
+            location.href = `https://bypass.vip/userscript.html?url=${encodeURIComponent(location.href)}&time=${config.time}&key=${config.key}`;
         }
     }
-
-    setPageContent();
-    const redirectUrl = getRedirectUrl();
-    handleRedirect(redirectUrl);
 })();
